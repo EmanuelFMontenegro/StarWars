@@ -1,0 +1,32 @@
+<div class="login-container">
+  <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
+    <header class="title-header">
+      <h1 class="title">Iniciar Sesión</h1>
+    </header>
+    <div class="form-group">
+      <label for="username">Usuario</label>
+      <input id="username" type="text" formControlName="username" required
+        [class.invalid]="isControlInvalid('username')" />
+      <p class="error-message" *ngIf="isControlInvalid('username')">
+        Usuario es obligatorio.
+      </p>
+    </div>
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <div class="password-wrapper">
+        <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" required
+          [class.invalid]="isControlInvalid('password')" />
+        <mat-icon class="toggle-password" (click)="togglePasswordVisibility()">
+          {{ showPassword ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
+      </div>
+      <p class="error-message" *ngIf="isControlInvalid('password')">
+        Contraseña es obligatoria.
+      </p>
+    </div>
+    <button class="submit-button" type="submit" [disabled]="loginForm.invalid || loading">
+      <span *ngIf="loading" class="spinner"></span>
+      <span *ngIf="!loading">Ingresar</span>
+    </button>
+  </form>
+</div>

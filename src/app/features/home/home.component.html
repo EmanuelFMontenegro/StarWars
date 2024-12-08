@@ -1,0 +1,31 @@
+<div class="home-page container">
+  <!-- Botón con avatar y logout -->
+  <div class="menu">
+    <button class="menu-toggle" (click)="toggleMenu()">
+      <mat-icon class="avatar-icon">person</mat-icon>
+    </button>
+    <ul class="menu-dropdown" *ngIf="isMenuOpen">
+      <li (click)="logout()">Salir</li>
+    </ul>
+  </div>
+
+
+  <header class="title-header">
+    <h1 class="title">Star Wars</h1>
+  </header>
+
+  <div class="cards-container">
+    <a class="card" routerLink="/personajes">
+      <img src="/img/personaje.png" alt="Personajes" />
+      <span>Personajes</span>
+    </a>
+    <a class="card" routerLink="/naves">
+      <img src="/img/naves.png" alt="Naves" />
+      <span>Naves</span>
+    </a>
+    <a class="card" routerLink="/planetas">
+      <img src="/img/planeta.png" alt="Planetas" />
+      <span>Planetas</span>
+    </a>
+  </div>
+</div>

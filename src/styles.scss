@@ -1,0 +1,27 @@
+@import 'ngx-toastr/toastr';
+html, body {
+  font-family: 'StarJediOutline', sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+@font-face {
+  font-family: 'StarJediOutline';
+  src: url('/fonts/starjout/Starjout.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'StarJedi';
+  src: url('/fonts/starjedi/Starjedi.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Configuración global de las fuentes */
+
+
+
+

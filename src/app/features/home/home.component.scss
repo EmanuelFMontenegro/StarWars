@@ -1,0 +1,161 @@
+/* Menú con mat-icon */
+.menu {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.avatar-icon {
+  font-size: 40px;
+  color: #ffd700; /* Amarillo */
+  transition: transform 0.3s;
+}
+.mat-icon {
+  height: 40px;
+  width: 40px;
+}
+.avatar-icon:hover {
+  transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
+}
+
+/* Menú desplegable */
+.menu-dropdown {
+  position: absolute;
+  top: 70px; /* Ajusta la posición debajo del ícono */
+  right: 10px;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  border: 1px solid #ffd700;
+  border-radius: 10px;
+  list-style: none;
+  padding: 10px;
+  text-align: center;
+  z-index: 10;
+  min-width: 100px; /* Asegura que el menú tenga un tamaño adecuado */
+}
+
+.menu-dropdown li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.menu-dropdown li:hover {
+  background: rgba(255, 215, 0, 0.2); /* Fondo dorado claro al pasar el mouse */
+}
+
+/* Diseño responsive */
+@media (max-width: 768px) {
+  .menu {
+    top: 10px;
+    right: 10px;
+  }
+
+  .avatar-icon {
+    font-size: 40px; /* Tamaño más pequeño para pantallas pequeñas */
+  }
+
+  .menu-dropdown {
+    top: 60px;
+    right: 5px;
+  }
+}
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  background: url('/img/fondo_guerrero.png') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  overflow: hidden; /* Evita desbordamiento visual */
+}
+
+/* Título principal */
+.title-header {
+  margin-bottom: 30px; /* Espacio entre el título y las tarjetas */
+}
+
+.title {
+  font-family: 'StarJedi', sans-serif;
+  font-size: 5rem;
+  color: transparent;
+  -webkit-text-stroke: 2px #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 0.3rem;
+  animation: glow 1.5s infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 10px #ffd700, 0 0 30px #ff9900, 0 0 50px #ff6600;
+  }
+  50% {
+    text-shadow: 0 0 20px #ffd700, 0 0 40px #ff9900, 0 0 60px #ff6600;
+  }
+}
+
+/* Contenedor de tarjetas */
+.cards-container {
+  display: flex;
+  justify-content: center; /* Centra las tarjetas */
+  align-items: center;
+  gap: 30px; /* Espacio entre las tarjetas */
+  flex-wrap: wrap; /* Permite que las tarjetas se ajusten en diferentes filas si es necesario */
+  width: 65%;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7); /* Fondo oscuro con transparencia */
+  border-radius: 15px;
+}
+
+/* Tarjetas individuales */
+.card {
+  flex: 0 0 250px; /* Ancho fijo para cada tarjeta */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra el contenido dentro de cada tarjeta */
+  justify-content: space-between; /* Asegura un espaciado uniforme */
+  text-decoration: none;
+  color: white;
+  background: rgba(0, 0, 0, 1); /* Fondo oscuro */
+  padding: 20px;
+  border-radius: 10px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 300px; /* Tamaño fijo para que todas las tarjetas tengan la misma altura */
+
+  &:hover {
+    transform: scale(1.1); /* Zoom al pasar el mouse */
+    box-shadow: 0 0 20px #ffd700; /* Sombra dorada */
+  }
+
+  img {
+    width: 250px; /* Ajusta el tamaño de las imágenes */
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    flex-grow: 1; /* Permite que la imagen se adapte automáticamente */
+    display: block;
+    object-fit: contain; /* Asegura que la imagen no se deforme */
+  }
+
+  span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #ffd700;
+    margin-top: auto;
+    animation: glow 1.5s infinite;
+  }
+}
