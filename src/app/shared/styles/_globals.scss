@@ -1,0 +1,53 @@
+
+html,
+body {
+  font-family: 'StarJediOutline', sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+// Tipografía
+@mixin title-styles($font-size: 2.5rem, $stroke-color: #ffd700) {
+  font-family: 'StarJedi', sans-serif;
+  font-size: $font-size;
+  color: transparent;
+  -webkit-text-stroke: 1px $stroke-color;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+}
+
+// Formulario
+@mixin input-styles($border-color: #ffd700, $focus-color: #ff9900) {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid $border-color;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1rem;
+  color: white;
+
+  &:focus {
+    border-color: $focus-color;
+    box-shadow: 0 0 5px $focus-color;
+  }
+}
+
+// Botones
+@mixin button-styles($bg-color: #ffd700, $hover-color: #ff9900) {
+  font-family: 'StarJedi', sans-serif;
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  color: white;
+  background: $bg-color;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: $hover-color;
+  }
+}

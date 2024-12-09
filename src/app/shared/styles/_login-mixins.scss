@@ -1,0 +1,284 @@
+// Mixin para Flexbox Login-Otros-Components
+@mixin flex-center($direction: column, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 0 10px;
+  }
+}
+
+// Mixin para formulario de login
+@mixin login-form-styles($bg-color: rgba(0, 0, 0, 0.4), $radius: 20px, $box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7)) {
+  background: $bg-color;
+  padding: 60px;
+  @include rounded($radius);
+  width: 460px;
+  text-align: left;
+  box-shadow: $box-shadow;
+  @include edge-smoke(rgba(255, 255, 255, 0.3)); // Efecto humo
+  z-index: 0;
+}
+
+// Mixin para grupos de formulario (labels e inputs)
+@mixin form-group-styles($label-color: white, $margin-bottom: 20px) {
+  margin-bottom: $margin-bottom;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: $label-color;
+  }
+}
+@mixin title-styles($font-size: 2rem, $stroke-color: #ffd700) {
+  font-family: 'StarJedi', sans-serif;
+  font-size: $font-size;
+  color: transparent;
+  -webkit-text-stroke: 2px $stroke-color;
+  text-transform: uppercase;
+  letter-spacing: 0.3rem;
+  animation: glow 1.5s infinite;
+
+  @keyframes glow {
+    0%,
+    100% {
+      text-shadow: 0 0 10px $stroke-color, 0 0 30px lighten($stroke-color, 10%), 0 0 50px darken($stroke-color, 10%);
+    }
+    50% {
+      text-shadow: 0 0 20px $stroke-color, 0 0 40px lighten($stroke-color, 15%), 0 0 60px darken($stroke-color, 20%);
+    }
+  }
+}
+
+// Mixin para encabezado de título
+@mixin title-header-styles($margin-bottom: 20px, $text-align: center,$stroke-color: #ffd700) {
+  text-align: $text-align;
+  -webkit-text-stroke: 2px $stroke-color;
+  animation: glow 1.5s infinite;
+  margin-bottom: $margin-bottom;
+
+  @keyframes glow {
+    0%,
+    100% {
+      text-shadow: 0 0 10px $stroke-color, 0 0 30px lighten($stroke-color, 10%), 0 0 50px darken($stroke-color, 10%);
+    }
+    50% {
+      text-shadow: 0 0 20px $stroke-color, 0 0 40px lighten($stroke-color, 15%), 0 0 60px darken($stroke-color, 20%);
+    }
+  }
+}
+@mixin full-screen-background($image-url) {
+  height: 100vh;
+  @include background-cover($image-url, center, cover);
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 5px;
+  }
+}
+
+// Mixin para fondos
+@mixin background-cover($image-url, $position: center, $size: cover) {
+  background: url($image-url) no-repeat $position;
+  background-size: $size;
+
+  @media (max-width: 768px) {
+    background-size: cover;
+  }
+}
+
+// Mixin para bordes redondeados
+@mixin rounded($radius: 5px) {
+  border-radius: $radius;
+}
+
+// Mixin para transiciones suaves
+@mixin transition($property: all, $duration: 0.3s, $timing: ease) {
+  transition: $property $duration $timing;
+}
+
+// Mixin para sombreado de texto
+@mixin text-shadow($color1, $color2, $color3) {
+  text-shadow: 0 0 10px $color1, 0 0 20px $color2, 0 0 30px $color3;
+
+  @media (max-width: 768px) {
+    text-shadow: 0 0 5px $color1, 0 0 10px $color2, 0 0 15px $color3;
+  }
+}
+
+// Mixin para inputs
+@mixin input-styles(
+  $border-color: #ffd700,
+  $focus-color: #ff9900,
+  $padding: 10px,
+  $font-size: 1rem
+) {
+  width: 100%;
+  padding: $padding;
+  background: transparent;
+  border: 1px solid $border-color;
+  border-radius: 5px;
+  outline: none;
+  font-size: $font-size;
+  color: white;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: $focus-color;
+    box-shadow: 0 0 5px $focus-color;
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+}
+
+// Mixin para botón + spinner
+@mixin submit-button-styles($bg-color: #ffd700, $hover-color: #ff9900) {
+  @include button-styles($bg-color, $hover-color); 
+
+  .spinner {
+    border: 3px solid #fff;
+    border-top: 3px solid $hover-color;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @media (max-width: 768px) {
+    .spinner {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .spinner {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+
+// Mixin para botón contenedor
+@mixin submit-button-container($margin-top: 20px, $border-color: $primary-color) {
+  margin-top: $margin-top;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid $border-color;
+  border-radius: 5px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: 10px;
+}
+
+// Mixin para humo desde los bordes
+@mixin edge-smoke($smoke-color: rgba(0, 0, 0, 0.3)) {
+  position: relative;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, $smoke-color, transparent 60%);
+    animation: smoke-borders 5s infinite ease-in-out;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  &::before {
+    top: -50%;
+    left: -50%;
+    animation-delay: 0s;
+  }
+
+  &::after {
+    bottom: -50%;
+    right: -50%;
+    animation-delay: 2.5s;
+  }
+
+  @keyframes smoke-borders {
+    0% {
+      transform: scale(0.5) translate(0, 0);
+      opacity: 0.6;
+    }
+    50% {
+      transform: scale(1) translate(10px, -10px);
+      opacity: 0.3;
+    }
+    100% {
+      transform: scale(1.5) translate(-10px, 10px);
+      opacity: 0;
+    }
+  }
+}
+
+// Mixin para animación de giro
+@mixin spin-animation($duration: 0.8s, $timing: linear) {
+  animation: spin $duration $timing infinite;
+}
+
+// Keyframes para giro
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Mixin para posicionar ícono de contraseña
+@mixin password-wrapper-styles {
+  position: relative;
+}
+
+@mixin password-icon($icon-color: #ffd700, $hover-color: #ff9900, $font-size: 1.5rem) {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: $font-size;
+  color: $icon-color;
+
+  @include transition(color);
+
+  &:hover {
+    color: $hover-color;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+    right: 5px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+    right: 3px;
+  }
+}

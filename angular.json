@@ -40,8 +40,11 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
-          },
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/shared/styles"]
+            }
+         },
           "configurations": {
             "production": {
               "fileReplacements": [

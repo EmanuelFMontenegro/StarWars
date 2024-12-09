@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -27,7 +27,17 @@ export class HomeComponent {
   }
   logout(): void {
     this.isMenuOpen = false;
-    // Redirigir al usuario al login o cerrar sesión
+
     this.router.navigate(['auth/login']);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+
+    
+    if (!target.closest('.menu') && this.isMenuOpen) {
+      this.isMenuOpen = false;
+    }
   }
 }

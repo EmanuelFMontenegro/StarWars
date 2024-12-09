@@ -1,0 +1,84 @@
+// Mixin para el contenedor del menú
+@mixin menu-styles($top: 20px, $right: 20px) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    top: 10px;
+    right: 10px;
+  }
+}
+
+// Mixin para el ícono del avatar
+@mixin avatar-icon-styles($color: #ffd700, $hover-scale: 1.1, $icon-size: 40px) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $icon-size;
+  height: $icon-size;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 10px $color;
+  color: $color;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale($hover-scale);
+    box-shadow: 0 0 15px $color;
+  }
+
+  mat-icon {
+    font-size: $icon-size * 0.6;
+    height: $icon-size * 0.6;
+    width: $icon-size * 0.6;
+    color: inherit;
+
+    &:hover {
+      color: lighten($color, 10%);
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: $icon-size * 0.8;
+    height: $icon-size * 0.8;
+
+    mat-icon {
+      font-size: $icon-size * 0.5;
+    }
+  }
+}
+
+// Mixin para el menú desplegable
+@mixin dropdown-menu($bg-color: rgba(0, 0, 0, 0.9), $border-color: #ffd700, $hover-bg: rgba(255, 255, 255, 0.2)) {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: $bg-color;
+  color: white;
+  border: 1px solid $border-color;
+  border-radius: 10px;
+  list-style: none;
+  padding: 10px;
+  text-align: center;
+  z-index: 100;
+  min-width: 120px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+  li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: $hover-bg;
+    }
+  }
+
+  @media (max-width: 768px) {
+    top: 50px;
+    right: 5px;
+  }
+}
