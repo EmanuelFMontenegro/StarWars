@@ -1,16 +1,36 @@
-<div class="people-container">
-  <!-- Barra de Búsqueda -->
-  <div class="search-bar">
-    <input type="text" placeholder="Buscar persona..." [(ngModel)]="searchTerm" />
-    <button (click)="onSearch()">Buscar</button>
+<div *ngIf="isLoading" class="spinner-overlay">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="!isLoading">
+  <div class="back-home">
+    <button (click)="goHome()">
+      ⬅ Volver al Home
+    </button>
   </div>
 
-  <!-- Contenedor de Tarjetas -->
-  <div class="cards-container">
-    <div class="card" *ngFor="let person of filteredPeople">
-      <img [src]="getImageUrl(person)" [alt]="person.name" />
-      <h2>{{ person.name }}</h2>
-      <button (click)="viewDetails(person)">Ver Detalle</button>
+  <div class="people-container">
+    <h1 class="title">Personajes</h1>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar persona..." [(ngModel)]="searchTerm" />
+      <button (click)="onClearSearch()">Limpiar</button>
+      <button (click)="onSearch()">Buscar</button>
+    </div>
+
+
+    <div class="cards-container">
+      <div class="card" *ngFor="let person of filteredPeople">
+        <img [src]="getImageUrl(person)" [alt]="person.name" />
+        <h2>{{ person.name }}</h2>
+        <button (click)="viewDetails(person)">Ver Detalle</button>
+      </div>
+    </div>
+
+    <div class="paginator">
+      <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+      <span>Página {{ currentPage }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
     </div>
   </div>
 </div>

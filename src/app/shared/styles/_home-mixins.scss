@@ -1,5 +1,6 @@
+@import '../../shared/styles/globals';
 
-/// Mixin para la página principal (HOME)
+/// *****  Mixins  Flexbox para la página principal (HOME)********************
 @mixin home-page-styles($bg-image: url('/img/fondo_guerrero.png')) {
   display: flex;
   flex-direction: column;
@@ -77,33 +78,28 @@
 }
 
 // Mixin para el título
-@mixin title-styles($font-size: 5rem, $stroke-color: #ffd700) {
-  font-family: 'StarJedi', sans-serif;
-  font-size: $font-size;
-  color: transparent;
+@mixin title-header-styles($padding: 70px, $text-align: center, $stroke-color: #ffd700, $breakpoint-mobile: 480px) {
+  text-align: $text-align;
   -webkit-text-stroke: 2px $stroke-color;
-  text-transform: uppercase;
-  letter-spacing: 0.3rem;
   animation: glow 1.5s infinite;
+  padding: $padding;
 
   @keyframes glow {
     0%,
     100% {
-      text-shadow: 0 0 10px #ffd700, 0 0 30px #ff9900, 0 0 50px #ff6600;
+      text-shadow: 0 0 10px $stroke-color, 0 0 30px lighten($stroke-color, 10%), 0 0 50px darken($stroke-color, 10%);
     }
     50% {
-      text-shadow: 0 0 20px #ffd700, 0 0 40px #ff9900, 0 0 60px #ff6600;
+      text-shadow: 0 0 20px $stroke-color, 0 0 40px lighten($stroke-color, 15%), 0 0 60px darken($stroke-color, 20%);
     }
   }
 
-  @media (max-width: 768px) {
-    font-size: calc($font-size * 0.7);
-  }
-
-  @media (max-width: 480px) {
-    font-size: calc($font-size * 0.5);
+  // Breakpoint mobile
+  @media (max-width: $breakpoint-mobile) {
+    padding: 8px;
   }
 }
+
 
 // Mixin para contenedor de tarjetas
 @mixin cards-container-styles($gap: 30px, $bg-color: rgba(0, 0, 0, 0.4)) {
@@ -114,7 +110,7 @@
   flex-wrap: wrap;
   width: 70%;
   max-height: 70vh;
-  padding: 20px;
+  padding: 60px;
   background: $bg-color;
   border-radius: 15px;
   overflow-y: auto;
@@ -159,7 +155,7 @@
   padding: 20px;
   border-radius: 10px;
   transition: transform 0.3s, box-shadow 0.3s;
-  height: 270px;
+  height: 285px;
 
   &:hover {
     transform: scale($hover-scale);
@@ -198,11 +194,11 @@
 
   @media (max-width: 480px) {
     flex: 0 0 150px;
-    padding: 10px;
+    padding: 60px;
     height: 200px;
 
     img {
-      max-height: 100px;
+      max-width: 450px;
     }
 
     span {

@@ -1,8 +1,48 @@
 @import 'ngx-toastr/toastr';
-@import '../src/app/shared/styles/login-mixins';
-@import '../src/app/shared/styles/home-mixins';
-@import '../src/app/shared/styles/globals';
-@import '../src/app/shared/styles/variables';
-@import '../src/app/shared/styles/fonts';
+@import './app/shared/styles/dialog-mixins';
 
 
+
+
+
+html, body {
+  font-family: 'StarJediOutline', sans-serif !important; /* Establece Star Jedi como fuente global */
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #ffd700;
+}
+
+// Sobrescribe estilos de Angular Material
+
+::ng-deep .mat-body-large,
+::ng-deep .mat-input-element,
+::ng-deep .mat-form-field-infix {
+  font-family: 'StarJediOutline', sans-serif !important;
+}
+
+
+.cdk-overlay-backdrop {
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.cdk-global-scrollblock {
+  overflow: hidden !important;
+}
+
+.custom-dialog-container {
+  @include dialog-container-style;
+}
+
+mat-dialog-title {
+  @include dialog-title-style;
+}
+
+mat-dialog-content {
+  @include dialog-content-style;
+}
+
+mat-dialog-actions {
+  @include dialog-actions-style;
+}

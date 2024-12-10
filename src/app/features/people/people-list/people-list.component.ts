@@ -1,16 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { PeopleService } from '../services/people.service';
 import { Person } from '../services/person.model';
-import { MatDialog } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common'; // Importa CommonModule
-import { FormsModule } from '@angular/forms'; // Importa FormsModule para ngModel
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { DialogComponent } from '../../../shared/dialog/dialog.component';
+import { DialogDataService } from '../../../shared/dialog/dialog.service';
+import { ToastrService } from 'ngx-toastr';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-people-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatDialogModule, DialogComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatDialogModule,
+    DialogComponent,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './people-list.component.html',
   styleUrls: ['./people-list.component.scss'],
 })
@@ -18,35 +27,99 @@ export class PeopleListComponent implements OnInit {
   people: Person[] = [];
   filteredPeople: Person[] = [];
   searchTerm: string = '';
+  currentPage: number = 1;
+  cardsPerPage: number = 4;
+  totalPages: number = 0;
+  isLoading: boolean = true;
 
   constructor(
     private peopleService: PeopleService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private dialogDataService: DialogDataService,
+    private toastr: ToastrService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.peopleService.getPeople().subscribe((response) => {
-      this.people = response.results;
-      this.filteredPeople = this.people;
-    });
+    this.TraerPersonajes();
   }
 
+  TraerPersonajes(): void {
+    this.isLoading = true;
+    this.peopleService.getPeople().subscribe({
+      next: (response) => {
+        this.people = response.results;
+        this.totalPages = Math.ceil(this.people.length / this.cardsPerPage);
+        this.updateFilteredPeople();
+      },
+      error: () => {
+        this.toastr.error('Error al cargar los personajes.', 'Error');
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+  goHome(): void {
+    this.router.navigate(['/home']);
+  }
   onSearch(): void {
-    this.filteredPeople = this.people.filter((person) =>
-      person.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    if (!this.searchTerm.trim()) {
+      this.toastr.warning('Por favor ingrese un nombre para buscar.', 'Atención');
+      return;
+    }
+
+    const search = this.searchTerm.toLowerCase();
+    const results = this.people.filter((person) =>
+      person.name.toLowerCase().includes(search)
     );
+
+    if (results.length === 0) {
+      this.toastr.info('Personaje inexistente.', 'Información');
+    }
+
+    this.filteredPeople = results;
   }
 
   viewDetails(person: Person): void {
+    const details = this.dialogDataService.preparePersonDetails(person);
+
     this.dialog.open(DialogComponent, {
-      data: person,
-      width: '400px',
-      position: { top: '10%' },
+      data: { title: person.name, details },
+      disableClose: true,
+      panelClass: 'custom-dialog-container',
     });
   }
 
   getImageUrl(person: Person): string {
-    const id = person.url.split('/').slice(-2, -1)[0];
-    return `https://starwars-visualguide.com/assets/img/characters/${id}.jpg`;
+    return this.peopleService.getImageUrl(person);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updateFilteredPeople();
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateFilteredPeople();
+    }
+  }
+
+  updateFilteredPeople(): void {
+    const startIndex = (this.currentPage - 1) * this.cardsPerPage;
+    this.filteredPeople = this.people.slice(
+      startIndex,
+      startIndex + this.cardsPerPage
+    );
+  }
+  onClearSearch(): void {
+    this.searchTerm = '';
+    this.currentPage = 1;
+    this.TraerPersonajes();
+    this.toastr.success('Búsqueda restablecida.', 'Limpieza exitosa');
   }
 }

@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule
+import { FormsModule } from '@angular/forms'; 
 
 @Component({
   selector: 'app-search-bar',
   standalone: true,
-  imports: [FormsModule], // Agrega FormsModule a los imports
+  imports: [FormsModule],
   template: `
     <div class="search-bar">
       <input

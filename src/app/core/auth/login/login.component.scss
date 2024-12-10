@@ -1,6 +1,5 @@
-@import '../../../shared/styles/variables';
+
 @import '../../../shared/styles/login-mixins';
-@import '../../../shared/styles/fonts';
 @import '../../../shared/styles/globals';
 
 .login-container {
@@ -20,7 +19,7 @@
 
     @media (max-width: 480px) {
       width: 80%;
-      
+
     }
 
     .title-header {
@@ -38,7 +37,10 @@
         @include input-styles($primary-color, $secondary-color);
       }
     }
-
+    
+    .error-message {
+      @include error-message;
+    }
     .password-wrapper {
       @include password-wrapper-styles();
 

@@ -1,24 +1,51 @@
+// Importación de fuentes
+@font-face {
+  font-family: 'StarJedi';
+  src: url('/fonts/starjedi/Starjedi.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
+@font-face {
+  font-family: 'StarJediOutline';
+  src: url('/fonts/starjout/Starjout.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+// Colores globales
+$primary-color: #ffd700;
+$secondary-color: #ff9900;
+
+// Fuentes
+$font-family-jedi: 'StarJedi', sans-serif;
+$font-family-jedi-outline: 'StarJediOutline', sans-serif;
+
+// Estilos globales para html y body
 html,
 body {
-  font-family: 'StarJediOutline', sans-serif;
+  font-family: $font-family-jedi-outline; // Uso de StarJediOutline como fuente global
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: auto;
+  background-color: #000;
+  color: $primary-color;
 }
-// Tipografía
-@mixin title-styles($font-size: 2.5rem, $stroke-color: #ffd700) {
-  font-family: 'StarJedi', sans-serif;
+
+// Tipografía de títulos
+@mixin title-styles($font-size: 2.5rem, $stroke-color: $primary-color) {
+  font-family: $font-family-jedi;
   font-size: $font-size;
   color: transparent;
   -webkit-text-stroke: 1px $stroke-color;
+  animation: _ngcontent-ng-c1019994740_glow 1.5s infinite;
   text-transform: uppercase;
   letter-spacing: 0.2rem;
 }
 
-// Formulario
-@mixin input-styles($border-color: #ffd700, $focus-color: #ff9900) {
+// Formulario de entrada (inputs)
+@mixin input-styles($border-color: $primary-color, $focus-color: $secondary-color) {
   width: 100%;
   padding: 10px;
   background: transparent;
@@ -35,8 +62,8 @@ body {
 }
 
 // Botones
-@mixin button-styles($bg-color: #ffd700, $hover-color: #ff9900) {
-  font-family: 'StarJedi', sans-serif;
+@mixin button-styles($bg-color: $primary-color, $hover-color: $secondary-color) {
+  font-family: $font-family-jedi;
   width: 100%;
   padding: 10px;
   font-size: 1rem;
@@ -49,5 +76,23 @@ body {
 
   &:hover {
     background: $hover-color;
+  }
+}
+
+// Mixins generales
+@mixin jedi-font {
+  font-family: $font-family-jedi;
+  font-size: 1rem;
+  color: white;
+}
+
+@mixin jedi-input {
+  font-family: $font-family-jedi;
+  font-size: 1rem;
+  color: white;
+  border: 1px solid $primary-color;
+
+  &:focus {
+    border-color: $secondary-color;
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PeopleResponse } from './person.model';
+import { PeopleResponse, Person } from './person.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,5 +13,10 @@ export class PeopleService {
 
   getPeople(): Observable<PeopleResponse> {
     return this.http.get<PeopleResponse>(this.apiUrl);
+  }
+
+  getImageUrl(person: Person): string {
+    const id = person.url.split('/').slice(-2, -1)[0];
+    return `https://starwars-visualguide.com/assets/img/characters/${id}.jpg`;
   }
 }

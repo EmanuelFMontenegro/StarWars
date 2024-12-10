@@ -15,6 +15,7 @@ export interface Person {
   created: string;
   edited: string;
   url: string;
+  details?: { label: string; value: string | number }[];
 }
 
 export interface PeopleResponse {

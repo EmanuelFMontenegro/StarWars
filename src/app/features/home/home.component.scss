@@ -1,6 +1,8 @@
 
 @import '../../shared/styles/home-mixins';
 @import '../../shared/styles/menu-mixins';
+@import '../../shared/styles/globals';
+
 
 .home-page {
   @include home-page-styles();
@@ -27,8 +29,11 @@
 }
 
 .title-header {
+  @include title-header-styles();
+
   .title {
-    @include title-styles(5rem, #ffd700);
+    @include title-styles(4.5rem, $primary-color);
+    
   }
 }
 

@@ -1,0 +1,282 @@
+// *********Mixins Flexbox para People Component*********
+
+// Mixin para centrar elementos flexibles
+@mixin flex-center($direction: row, $gap: 10px) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: center;
+  align-items: center;
+  gap: $gap;
+}
+
+// Mixin para botones estilizados
+@mixin button-style($color: #007bff, $hover-color: #0056b3) {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #fff;
+  background-color: $color;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background-color: $hover-color;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+@mixin starwars-font($font-size: 3rem, $color: yellow, $shadow-color: rgba(255, 255, 0, 0.7)) {
+  font-size: $font-size;
+  color: $color;
+  text-shadow: 2px 2px 10px $shadow-color, 0 0 15px $color;
+  animation: flicker 1.5s infinite alternate;
+
+  @keyframes flicker {
+    0% {
+      text-shadow: 2px 2px 10px $shadow-color;
+    }
+    100% {
+      text-shadow: 0 0 20px $color;
+    }
+  }
+}
+
+// Mixin para estilo de tarjetas
+@mixin card-style($background-color: #1c1c1c, $hover-color: rgba(255, 255, 0, 0.4)) {
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 10px 15px $hover-color, 0 20px 30px rgba(255, 255, 0, 0.2);
+  }
+}
+
+
+// Mixin para contenedor general
+@mixin container-style($background-image: url('/img/fondo_sables.png')) {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), $background-image;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+// Mixin para el título con animación
+@mixin title-style($color: yellow, $shadow-color: rgba(255, 255, 0, 0.7)) {
+  font-size: 3rem;
+  font-family: 'Star Jedi', sans-serif;
+  color: $color;
+  text-shadow: 2px 2px 10px $shadow-color, 0 0 15px $color;
+  animation: flicker 1.5s infinite alternate;
+
+  @keyframes flicker {
+    0% {
+      text-shadow: 2px 2px 10px $shadow-color;
+    }
+    100% {
+      text-shadow: 0 0 20px $color;
+    }
+  }
+}
+
+//Efectos de glow infinito(amarillo oscilante en titles)
+@mixin infinite-glow($color: yellow, $glow-color: rgba(255, 255, 0, 0.5)) {
+  text-shadow:
+    0 0 2px $color,
+    0 0 4px $glow-color,
+    0 0 6px $glow-color,
+    0 0 8px $glow-color;
+
+  animation: glow 2s infinite alternate;
+
+  @keyframes glow {
+    0% {
+      text-shadow:
+        0 0 2px $color,
+        0 0 4px $glow-color,
+        0 0 6px $glow-color,
+        0 0 8px $glow-color;
+    }
+    100% {
+      text-shadow:
+        0 0 4px $color,
+        0 0 8px $glow-color,
+        0 0 12px $glow-color,
+        0 0 16px $glow-color;
+    }
+  }
+}
+
+
+
+// Mixin para los inputs de la barra de búsqueda
+@mixin input-style($width: 300px, $padding: 10px, $background: #444, $color: #fff) {
+  width: $width;
+  padding: $padding;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  background: $background;
+  color: $color;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+
+  &::placeholder {
+    color: #ccc;
+  }
+}
+
+// Mixin para el contenedor de tarjetas (grid)
+@mixin grid-style($columns: auto-fit, $min-width: 245px, $gap: 12px, $max-width: 1020px) {
+  display: grid;
+  grid-template-columns: repeat($columns, minmax($min-width, $min-width));
+  gap: $gap;
+  width: 100%;
+  max-width: $max-width;
+}
+
+
+// Mixin para el paginador
+@mixin paginator-container($padding-bottom: 120px, $gap: 10px) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $gap;
+  margin-top: 20px;
+  padding-bottom: $padding-bottom;
+}
+
+
+@media screen and (max-width: 768px) {
+  .cards-container {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+    gap: 10px;
+
+    input,
+    button {
+      width: 100%;
+    }
+  }
+
+  .paginator {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+// Breakpoints y Mixins para Mobile
+@mixin mobile-layout {
+  @media screen and (max-width: 768px) {
+    .people-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 15px;
+    }
+
+    .back-home {
+      align-self: flex-start;
+      button {
+        @include button-style(#ffd700, #ffa500);
+        width: 100%;
+        padding: 10px;
+      }
+    }
+
+    .title {
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .search-bar {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+
+      input {
+        @include input-style(100%, 12px, #333, #fff);
+      }
+
+      button {
+        @include button-style(#ffd700, #ffa500);
+
+        &:nth-child(2) {
+          background-color: #ff0000;
+        }
+      }
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .card {
+      @include card-style(#1c1c1c, rgba(255, 255, 0, 0.4));
+      padding: 20px;
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      button {
+        @include button-style(#ffd700, #ffa500);
+        width: 100%;
+      }
+    }
+
+    .paginator {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+      padding: 15px;
+
+      button {
+        @include button-style(#ffd700, #ffa500);
+        width: 100%;
+        padding: 10px;
+      }
+
+      span {
+        font-size: 1rem;
+        font-family: "StarJediOutline", sans-serif;
+        color: white;
+        text-align: center;
+      }
+    }
+  }
+}

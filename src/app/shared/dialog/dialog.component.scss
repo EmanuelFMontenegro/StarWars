@@ -1,0 +1,44 @@
+@import '../styles/dialog-mixins';
+
+
+
+.dialog-container {
+  @include dialog-container-style;
+}
+
+.dialog-title {
+  @include dialog-title-style;
+}
+
+.dialog-content {
+  @include dialog-content-style;
+
+  .detail {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+
+    .label {
+      font-size: 1.2rem;
+      color: $primary-color;
+      font-family: $font-family-jedi;
+      margin: 0;
+    }
+
+    .value {
+      font-size: 1rem;
+      color: #fff;
+      font-family: $font-family-jedi;
+      margin: 0;
+    }
+  }
+}
+
+.mat-dialog-actions button {
+  @include jedi-button-style;
+}
+
+.dialog-button {
+  @include jedi-button-style; // Botón estilo Jedi
+  margin-top: 20px;
+}
