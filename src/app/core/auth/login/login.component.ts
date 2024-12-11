@@ -30,11 +30,13 @@ export class LoginComponent {
     private router: Router,
     private toastr: ToastrService
   ) {
+
     this.loginForm = this.fb.group({
-      username: ['pruebas_tecnica', Validators.required],
-      password: ['pruebaprueba', Validators.required],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
+
 
   isControlInvalid(controlName: string): boolean {
     const control = this.loginForm.get(controlName);
@@ -46,20 +48,24 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
+
+
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
+      console.log('Formulario inválido:', this.loginForm.value);
 
       const { username, password } = this.loginForm.value;
-      console.log('Valores del formulario:', { username, password });
+
       if (!username || !password) {
-        this.toastr.info(
-          'Debe completar usuario y contraseña para iniciar sesión',
-          'Información'
+          this.toastr.warning(
+          'Debe completar el formulario de inicio de sesión para ingresar',
+          'Advertencia'
         );
       }
 
       return;
     }
+
     this.loading = true;
 
     const { username, password } = this.loginForm.value;

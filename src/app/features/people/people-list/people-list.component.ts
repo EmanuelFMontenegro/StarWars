@@ -9,6 +9,7 @@ import { DialogDataService } from '../../../shared/dialog/dialog.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
+import { NgxSpinnerService, NgxSpinnerModule } from 'ngx-spinner';
 
 @Component({
   selector: 'app-people-list',
@@ -19,6 +20,7 @@ import { Router } from '@angular/router';
     MatDialogModule,
     DialogComponent,
     MatProgressSpinnerModule,
+    NgxSpinnerModule,
   ],
   templateUrl: './people-list.component.html',
   styleUrls: ['./people-list.component.scss'],
@@ -30,14 +32,15 @@ export class PeopleListComponent implements OnInit {
   currentPage: number = 1;
   cardsPerPage: number = 4;
   totalPages: number = 0;
-  isLoading: boolean = true;
+  isSpinnerVisible: boolean = false;
 
   constructor(
     private peopleService: PeopleService,
     private dialog: MatDialog,
     private dialogDataService: DialogDataService,
     private toastr: ToastrService,
-    private router: Router,
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +48,8 @@ export class PeopleListComponent implements OnInit {
   }
 
   TraerPersonajes(): void {
-    this.isLoading = true;
+    this.isSpinnerVisible = true;
+    this.spinner.show(); 
     this.peopleService.getPeople().subscribe({
       next: (response) => {
         this.people = response.results;
@@ -56,16 +60,21 @@ export class PeopleListComponent implements OnInit {
         this.toastr.error('Error al cargar los personajes.', 'Error');
       },
       complete: () => {
-        this.isLoading = false;
+        this.spinner.hide(); // Ocultar el spinner
+        this.isSpinnerVisible = false;
       },
     });
   }
+
   goHome(): void {
     this.router.navigate(['/home']);
   }
   onSearch(): void {
     if (!this.searchTerm.trim()) {
-      this.toastr.warning('Por favor ingrese un nombre para buscar.', 'Atención');
+      this.toastr.warning(
+        'Por favor ingrese un nombre para buscar.',
+        'Atención'
+      );
       return;
     }
 

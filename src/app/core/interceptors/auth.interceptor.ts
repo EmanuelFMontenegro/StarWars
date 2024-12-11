@@ -8,19 +8,19 @@ export const AuthInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
-  const authService = inject(AuthenticationService); // Inyección funcional
+  const authService = inject(AuthenticationService);
   const token = authService.getToken();
 
-  console.log('Token usado en la solicitud:', token);
+ 
 
   if (token) {
     const clonedRequest = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`, // Añade el token al header Authorization
+        Authorization: `Bearer ${token}`,
       },
     });
-    return next(clonedRequest); // Pasa la solicitud clonada
+    return next(clonedRequest);
   }
 
-  return next(req); // Si no hay token, continúa con la solicitud original
+  return next(req);
 };

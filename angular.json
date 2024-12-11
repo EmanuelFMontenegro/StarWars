@@ -39,6 +39,7 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/magenta-violet.css",
+              "node_modules/ngx-spinner/animations/ball-beat.css",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -114,8 +115,8 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/magenta-violet.css",
-              "src/styles.scss",
-              "node_modules/ngx-spinner/animations/ball-beat.css"
+              "node_modules/ngx-spinner/animations/ball-beat.css",
+              "src/styles.scss"
             ],
             "scripts": []
           }

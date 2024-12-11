@@ -1,12 +1,12 @@
-<div *ngIf="isLoading" class="spinner-overlay">
-  <mat-spinner></mat-spinner>
-</div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#ffd700" type="ball-beat" [fullScreen]="true">
+  <p style="color: white; text-align: center; font-size: 1.2rem;">Cargando...</p>
+</ngx-spinner>
 
-<div *ngIf="!isLoading">
+
+
+<div *ngIf="!isSpinnerVisible">
   <div class="back-home">
-    <button (click)="goHome()">
-      ⬅ Volver al Home
-    </button>
+    <button (click)="goHome()">⬅ Volver al Home</button>
   </div>
 
   <div class="people-container">
@@ -17,7 +17,6 @@
       <button (click)="onClearSearch()">Limpiar</button>
       <button (click)="onSearch()">Buscar</button>
     </div>
-
 
     <div class="cards-container">
       <div class="card" *ngFor="let person of filteredPeople">

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,7 @@ import { MatIcon } from '@angular/material/icon';
 export class HomeComponent {
   isMenuOpen = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private authService: AuthenticationService) {}
 
   items = [
     { name: 'Personajes', image: '/img/personaje.png', link: '/personajes' },
@@ -27,7 +28,7 @@ export class HomeComponent {
   }
   logout(): void {
     this.isMenuOpen = false;
-
+    this.authService.logout();
     this.router.navigate(['auth/login']);
   }
 
@@ -35,7 +36,7 @@ export class HomeComponent {
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
 
-    
+
     if (!target.closest('.menu') && this.isMenuOpen) {
       this.isMenuOpen = false;
     }

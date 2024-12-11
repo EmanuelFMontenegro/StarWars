@@ -24,14 +24,19 @@ $font-family-jedi-outline: 'StarJediOutline', sans-serif;
 // Estilos globales para html y body
 html,
 body {
-  font-family: $font-family-jedi-outline; // Uso de StarJediOutline como fuente global
+  font-family: $font-family-jedi-outline;
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: auto;
+  overflow: hidden;
   background-color: #000;
   color: $primary-color;
+
+  @media (max-width: 768px) {
+    overflow: auto; 
+  }
 }
+
 
 // Tipografía de títulos
 @mixin title-styles($font-size: 2.5rem, $stroke-color: $primary-color) {
