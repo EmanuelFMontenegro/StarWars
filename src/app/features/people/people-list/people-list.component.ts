@@ -49,7 +49,7 @@ export class PeopleListComponent implements OnInit {
 
   TraerPersonajes(): void {
     this.isSpinnerVisible = true;
-    this.spinner.show(); 
+    this.spinner.show();
     this.peopleService.getPeople().subscribe({
       next: (response) => {
         this.people = response.results;
@@ -60,21 +60,18 @@ export class PeopleListComponent implements OnInit {
         this.toastr.error('Error al cargar los personajes.', 'Error');
       },
       complete: () => {
-        this.spinner.hide(); // Ocultar el spinner
+        this.spinner.hide();
         this.isSpinnerVisible = false;
       },
     });
   }
 
   goHome(): void {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
   onSearch(): void {
     if (!this.searchTerm.trim()) {
-      this.toastr.warning(
-        'Por favor ingrese un nombre para buscar.',
-        'Atención'
-      );
+      this.toastr.warning('Por favor ingrese un nombre para buscar.', 'Atención');
       return;
     }
 
@@ -85,18 +82,36 @@ export class PeopleListComponent implements OnInit {
 
     if (results.length === 0) {
       this.toastr.info('Personaje inexistente.', 'Información');
+      this.filteredPeople = this.people.slice(0, this.cardsPerPage);
+      this.currentPage = 1;
+      this.totalPages = Math.ceil(this.people.length / this.cardsPerPage);
+      return;
     }
 
-    this.filteredPeople = results;
+    this.filteredPeople = results.slice(0, this.cardsPerPage);
+    this.currentPage = 1;
+    this.totalPages = Math.ceil(results.length / this.cardsPerPage);
   }
 
+
   viewDetails(person: Person): void {
-    const details = this.dialogDataService.preparePersonDetails(person);
+    const personMappings = {
+      height: 'Altura',
+      mass: 'Peso',
+      gender: 'Género',
+      birth_year: 'Año de Nacimiento',
+    };
+
+    const details = this.dialogDataService.prepareDetails(
+      person,
+      personMappings
+    );
 
     this.dialog.open(DialogComponent, {
-      data: { title: person.name, details },
-      disableClose: true,
-      panelClass: 'custom-dialog-container',
+      data: {
+        title: `Detalles de ${person.name}`,
+        details,
+      },
     });
   }
 

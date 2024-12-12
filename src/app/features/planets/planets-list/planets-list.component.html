@@ -1,23 +1,39 @@
-<div class="visual-guide">
-  <h1>Planetas</h1>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#ffd700"
+  type="ball-beat"
+  [fullScreen]="true"
+>
+  <p>Cargando...</p>
+</ngx-spinner>
 
-  <!-- Spinner -->
-  <div class="spinner-container" *ngIf="isLoading">
-    <div class="spinner"></div>
+<div *ngIf="!isSpinnerVisible">
+  <div class="back-home">
+    <button (click)="goHome()">⬅ Volver al Home</button>
   </div>
 
-  <!-- Contenido -->
-  <div class="card-container" *ngIf="!isLoading">
-    <div class="card" *ngFor="let planet of filteredPlanetsList">
-      <img [src]="getPlanetImage(planet.url)" [alt]="planet.name" />
-      <h2>{{ planet.name }}</h2>
+  <div class="people-container">
+    <h1 class="title">Planetas</h1>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar planeta..." [(ngModel)]="searchTerm" />
+      <button (click)="onClearSearch()">Limpiar</button>
+      <button (click)="onSearch()">Buscar</button>
     </div>
-  </div>
 
-  <!-- Paginación -->
-  <div class="pagination" *ngIf="!isLoading">
-    <button (click)="previousPage()" [disabled]="!previousPageUrl">Anterior</button>
-    <span>Página {{ currentPage }}</span>
-    <button (click)="nextPage()" [disabled]="!nextPageUrl">Siguiente</button>
+    <div class="cards-container">
+      <div class="card" *ngFor="let planet of filteredPlanetsList">
+        <img [src]="getPlanetImage(planet)" [alt]="planet.name" />
+        <h2>{{ planet.name }}</h2>
+        <button (click)="viewDetails(planet)">Ver Detalle</button>
+      </div>
+    </div>
+    
+    <div class="paginator">
+      <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+      <span>Página {{ currentPage }} de {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+    </div>
   </div>
 </div>

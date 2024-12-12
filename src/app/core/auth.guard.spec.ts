@@ -23,8 +23,9 @@ describe('AuthGuard', () => {
     expect(guard).toBeTruthy(); // Verifica que el guard esté creado
   });
 
-  it('should allow activation when token exists in sessionStorage', () => {
-    spyOn(sessionStorage, 'getItem').and.returnValue('valid-token'); // Simula un token válido
+  it('should allow activation when a valid token exists in sessionStorage', () => {
+    const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.sflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'; // Token simulado
+    spyOn(sessionStorage, 'getItem').and.returnValue(validToken); // Simula un token válido
 
     const result = guard.canActivate();
     expect(result).toBeTrue(); // Espera que canActivate permita el acceso
@@ -33,6 +34,15 @@ describe('AuthGuard', () => {
 
   it('should block activation and redirect when token is missing', () => {
     spyOn(sessionStorage, 'getItem').and.returnValue(null); // Simula ausencia de token
+
+    const result = guard.canActivate();
+    expect(result).toBeFalse(); // Espera que canActivate bloquee el acceso
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/auth/login']); // Debe redirigir al login
+  });
+
+  it('should block activation and redirect when token is invalid', () => {
+    const invalidToken = 'invalid-token'; // Token inválido
+    spyOn(sessionStorage, 'getItem').and.returnValue(invalidToken); // Simula un token inválido
 
     const result = guard.canActivate();
     expect(result).toBeFalse(); // Espera que canActivate bloquee el acceso

@@ -30,13 +30,11 @@ export class LoginComponent {
     private router: Router,
     private toastr: ToastrService
   ) {
-
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
-
 
   isControlInvalid(controlName: string): boolean {
     const control = this.loginForm.get(controlName);
@@ -48,21 +46,19 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-
-
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      console.log('Formulario inválido:', this.loginForm.value);
-
-      const { username, password } = this.loginForm.value;
+      const username = this.loginForm.get('username')?.value;
+      const password = this.loginForm.get('password')?.value;
 
       if (!username || !password) {
-          this.toastr.warning(
-          'Debe completar el formulario de inicio de sesión para ingresar',
+        this.toastr.warning(
+          'Debe ingresar las credenciales para iniciar sesión.',
           'Advertencia'
         );
       }
 
+      console.log('Formulario inválido:', this.loginForm.value);
       return;
     }
 
@@ -81,7 +77,16 @@ export class LoginComponent {
       },
       error: (err) => {
         console.error('Error al iniciar sesión:', err);
-        this.toastr.error('Contraseña o usuario incorrectos.', 'Atención');
+
+        if (err.status === 500) {
+          this.toastr.error(
+            'Tenemos un problema para iniciar sesión. Por favor, intente más tarde.',
+            'Error del servidor'
+          );
+        } else {
+          this.toastr.error('Contraseña o usuario incorrectos.', 'Atención');
+        }
+
         this.loading = false;
       },
       complete: () => {
@@ -89,4 +94,5 @@ export class LoginComponent {
       },
     });
   }
+
 }

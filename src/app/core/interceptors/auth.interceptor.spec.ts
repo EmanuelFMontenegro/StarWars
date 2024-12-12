@@ -1,28 +1,38 @@
 import { TestBed } from '@angular/core/testing';
 import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+} from '@angular/common/http';
+import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { of, throwError } from 'rxjs';
 
 describe('AuthInterceptor', () => {
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
-  let authServiceSpy: jasmine.SpyObj<AuthenticationService>;
+  let mockAuthService: jasmine.SpyObj<AuthenticationService>;
+  let mockSpinnerService: jasmine.SpyObj<NgxSpinnerService>;
 
   beforeEach(() => {
-    // Mock del AuthenticationService
-    authServiceSpy = jasmine.createSpyObj('AuthenticationService', [
-      'getToken',
-    ]);
+    mockAuthService = jasmine.createSpyObj('AuthenticationService', ['getToken']);
+    mockSpinnerService = jasmine.createSpyObj('NgxSpinnerService', ['getSpinner']);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
-        { provide: AuthenticationService, useValue: authServiceSpy },
-        { provide: HTTP_INTERCEPTORS, useValue: AuthInterceptor, multi: true },
+        { provide: AuthenticationService, useValue: mockAuthService },
+        { provide: NgxSpinnerService, useValue: mockSpinnerService },
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthInterceptor,
+          multi: true,
+        },
       ],
     });
 
@@ -31,30 +41,48 @@ describe('AuthInterceptor', () => {
   });
 
   afterEach(() => {
-    httpMock.verify(); // Verifica que no haya solicitudes pendientes
+    httpMock.verify();
   });
 
-  it('should add Authorization header when token exists', () => {
+  it('should add Authorization header when token is available', () => {
     const mockToken = 'mock-token';
-    authServiceSpy.getToken.and.returnValue(mockToken); // Simula un token válido
+    mockAuthService.getToken.and.returnValue(mockToken);
 
     httpClient.get('/test').subscribe();
-
     const req = httpMock.expectOne('/test');
-    expect(req.request.headers.has('Authorization')).toBeTrue();
-    expect(req.request.headers.get('Authorization')).toBe(
-      `Bearer ${mockToken}`
-    );
-    req.flush({});
+
+    expect(req.request.headers.get('Authorization')).toBe(`Bearer ${mockToken}`);
   });
 
-  it('should not add Authorization header when token does not exist', () => {
-    authServiceSpy.getToken.and.returnValue(null); // Simula ausencia de token
+  it('should not add Authorization header when token is not available', () => {
+    mockAuthService.getToken.and.returnValue(null);
 
     httpClient.get('/test').subscribe();
-
     const req = httpMock.expectOne('/test');
+
     expect(req.request.headers.has('Authorization')).toBeFalse();
-    req.flush({});
+  });
+
+  it('should handle multiple requests correctly', () => {
+    const mockToken = 'mock-token';
+    mockAuthService.getToken.and.returnValue(mockToken);
+
+    httpClient.get('/test1').subscribe();
+    httpClient.get('/test2').subscribe();
+
+    const req1 = httpMock.expectOne('/test1');
+    const req2 = httpMock.expectOne('/test2');
+
+    expect(req1.request.headers.get('Authorization')).toBe(`Bearer ${mockToken}`);
+    expect(req2.request.headers.get('Authorization')).toBe(`Bearer ${mockToken}`);
+  });
+
+  it('should proceed without Authorization header if getToken throws an error', () => {
+    mockAuthService.getToken.and.throwError('Error fetching token');
+
+    httpClient.get('/test').subscribe();
+    const req = httpMock.expectOne('/test');
+
+    expect(req.request.headers.has('Authorization')).toBeFalse();
   });
 });

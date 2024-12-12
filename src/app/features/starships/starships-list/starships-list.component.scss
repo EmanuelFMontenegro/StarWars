@@ -1,0 +1,170 @@
+@import '../../../shared/styles/base_reusable-mixins';
+@import '../../../shared/styles/globals';
+
+
+.people-container {
+  @include container-style();
+  padding-bottom: 50px;
+  min-height: calc(100vh - 50px);
+  max-width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  margin-top: -0.8em;
+
+  // mixin para diseño responsivo
+  @include mobile-layout;
+}
+
+.title {
+  @include title-styles($primary-color);
+  @include infinite-glow($primary-color, rgba(255, 255, 0, 0.5));
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .back-home {
+    @include button-styles($primary-color, $secondary-color);
+    font-size: 1.2rem;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 0, 0.8);
+    color: black;
+    border: 1px solid $primary-color;
+    border-radius: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $secondary-color;
+      color: $primary-color;
+    }
+  }
+}
+.back-home {
+  margin-bottom: 20px;
+  align-self: flex-start;
+
+  button {
+    @include button-styles(#ffd700, #ffa500);
+    font-family: $font-family-jedi;
+    font-size: 1.2rem;
+    background-color: rgba(255, 223, 0, 0.9);
+    color: black;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: #ffa500;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+.search-bar {
+  @include flex-center(row, 15px);
+  margin-bottom: 25px;
+  width: 100%;
+  max-width: 600px;
+
+  input {
+    @include input-style(100%, 12px, #333, #fff);
+    font-family: $font-family-jedi;
+    font-size: 1rem;
+    border: 1px solid #ffd700;
+    border-radius: 5px;
+    padding: 10px 15px;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: $secondary-color;
+    }
+  }
+
+  button {
+    @include button-styles($primary-color, $secondary-color);
+    font-size: 1rem;
+    padding: 10px 15px;
+
+    &:nth-child(3) {
+      background-color: #ff0000;
+      color: white;
+    }
+  }
+}
+
+.cards-container {
+  @include grid-style(auto-fit, 240px, 15px, 1020px);
+  margin: auto;
+}
+
+.card {
+  @include card-style(#1c1c1c, rgba(255, 255, 0, 0.3));
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  padding: 20px;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(255, 255, 0, 0.7);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffd700;
+    text-align: center;
+    font-family: "StarJedi", sans-serif;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  button {
+    @include button-styles($primary-color, $secondary-color);
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+}
+
+.paginator {
+  @include paginator-container(10px, 15px);
+  margin-top: auto;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px 0;
+
+  button {
+    @include button-styles($primary-color, $secondary-color);
+    font-size: 1rem;
+    padding: 8px 16px;
+    width: fit-content;
+  }
+
+  span {
+    font-size: 1rem;
+    font-family: "StarJediOutline", sans-serif;
+    color: white;
+    text-align: center;
+  }
+}

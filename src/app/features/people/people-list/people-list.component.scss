@@ -1,5 +1,6 @@
-@import '../../../shared/styles/people-mixins';
-@import '../../../shared/styles/globals';
+@import '../../../shared/styles/base_reusable-mixins';
+ @import '../../../shared/styles/globals';
+
 
 .people-container {
   @include container-style();
@@ -30,43 +31,43 @@
 
   .back-home {
     @include button-styles($primary-color, $secondary-color);
-    font-size: 1.2rem; // Ajustar tamaño del botón
-    padding: 8px 16px; // Mayor padding
-    background-color: rgba(255, 255, 0, 0.8); // Fondo amarillo
-    color: black; // Color del texto
-    border: 1px solid $primary-color; // Borde del color principal
-    border-radius: 8px; // Bordes redondeados
+    font-size: 1.2rem;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 0, 0.8);
+    color: black;
+    border: 1px solid $primary-color;
+    border-radius: 8px;
     cursor: pointer;
 
     &:hover {
-      background-color: $secondary-color; // Cambio de fondo al hover
-      color: $primary-color; // Cambio de texto al hover
+      background-color: $secondary-color;
+      color: $primary-color;
     }
   }
 }
 .back-home {
   margin-bottom: 20px;
-  align-self: flex-start; // Alineación a la izquierda en mobile
+  align-self: flex-start;
 
   button {
-    @include button-styles(#ffd700, #ffa500); // Estilos del botón
+    @include button-styles(#ffd700, #ffa500);
     font-family: $font-family-jedi;
-    font-size: 1.2rem; // Ajustar tamaño del texto
-    background-color: rgba(255, 223, 0, 0.9); // Fondo amarillo más intenso
-    color: black; // Color del texto
-    padding: 10px 20px; // Mayor padding para que sea más visible
-    border-radius: 8px; // Bordes redondeados
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); // Sombra para destacar el botón
+    font-size: 1.2rem;
+    background-color: rgba(255, 223, 0, 0.9);
+    color: black;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 
     &:hover {
-      background-color: #ffa500; // Cambio de fondo al hover
-      transform: translateY(-2px); // Efecto de elevación al hover
+      background-color: #ffa500;
+      transform: translateY(-2px);
     }
 
     &:active {
-      transform: translateY(0); // Efecto de clic
+      transform: translateY(0);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
   }
@@ -82,13 +83,13 @@
     @include input-style(100%, 12px, #333, #fff);
     font-family: $font-family-jedi;
     font-size: 1rem;
-    border: 1px solid #ffd700; // Borde amarillo
-    border-radius: 5px; // Bordes redondeados
-    padding: 10px 15px; // Espaciado interno
+    border: 1px solid #ffd700;
+    border-radius: 5px;
+    padding: 10px 15px;
     transition: border-color 0.3s ease;
 
     &:focus {
-      border-color: $secondary-color; // Color del borde al enfocar
+      border-color: $secondary-color;
     }
   }
 
@@ -98,8 +99,8 @@
     padding: 10px 15px;
 
     &:nth-child(3) {
-      background-color: #ff0000; // Fondo rojo para "Limpiar"
-      color: white; // Texto blanco
+      background-color: #ff0000;
+      color: white; 
     }
   }
 }

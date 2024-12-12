@@ -19,10 +19,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     importProvidersFrom(NgxSpinnerModule.forRoot()),
     provideToastr({
-      timeOut: 1500,
+      timeOut: 2000,
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
-   
+
   ],
 };

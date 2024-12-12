@@ -7,13 +7,13 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss'],
-  imports: [CommonModule], // Importa CommonModule para habilitar *ngFor
+  imports: [CommonModule],
 })
 export class DialogComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { title: string; details: { label: string; value: string }[] }
+    public data: { title: string; details: { label: string; value: string | number }[] }
   ) {}
 
   close(): void {

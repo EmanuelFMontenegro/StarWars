@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  private loginUrl = 'https://sandbox-be.helipagos.com/api/auth/login'; 
+  private loginUrl = 'https://sandbox-be.helipagos.com/api/auth/login';
 
   constructor(private http: HttpClient) {}
 

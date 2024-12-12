@@ -1,96 +1,170 @@
-.visual-guide {
-  text-align: center;
-  padding: 20px;
-  background-color: #121212;
-  color: #ffffff;
+@import '../../../shared/styles/base_reusable-mixins';
+@import '../../../shared/styles/globals';
 
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-  }
 
-  .card-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
-  }
+.people-container {
+  @include container-style();
+  padding-bottom: 50px;
+  min-height: calc(100vh - 50px);
+  max-width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  .card {
-    background-color: #1e1e1e;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease;
+  margin-top: -0.8em;
+
+  // mixin para diseño responsivo
+  @include mobile-layout;
+}
+
+.title {
+  @include title-styles($primary-color);
+  @include infinite-glow($primary-color, rgba(255, 255, 0, 0.5));
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .back-home {
+    @include button-styles($primary-color, $secondary-color);
+    font-size: 1.2rem;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 0, 0.8);
+    color: black;
+    border: 1px solid $primary-color;
+    border-radius: 8px;
+    cursor: pointer;
 
     &:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+      background-color: $secondary-color;
+      color: $primary-color;
+    }
+  }
+}
+.back-home {
+  margin-bottom: 20px;
+  align-self: flex-start;
+
+  button {
+    @include button-styles(#ffd700, #ffa500);
+    font-family: $font-family-jedi;
+    font-size: 1.2rem;
+    background-color: rgba(255, 223, 0, 0.9);
+    color: black;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: #ffa500;
+      transform: translateY(-2px);
     }
 
-    img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
+  }
+}
 
-    h2 {
-      font-size: 1.2rem;
-      padding: 10px;
-      background-color: #222;
-      margin: 0;
+.search-bar {
+  @include flex-center(row, 15px);
+  margin-bottom: 25px;
+  width: 100%;
+  max-width: 600px;
+
+  input {
+    @include input-style(100%, 12px, #333, #fff);
+    font-family: $font-family-jedi;
+    font-size: 1rem;
+    border: 1px solid #ffd700;
+    border-radius: 5px;
+    padding: 10px 15px;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: $secondary-color;
     }
   }
 
-  .pagination {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
+  button {
+    @include button-styles($primary-color, $secondary-color);
+    font-size: 1rem;
+    padding: 10px 15px;
 
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #007bff;
-      border: none;
-      border-radius: 5px;
-      color: #ffffff;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: #0056b3;
-      }
-
-      &:disabled {
-        background-color: #555;
-        cursor: not-allowed;
-      }
+    &:nth-child(3) {
+      background-color: #ff0000;
+      color: white;
     }
   }
-  .spinner-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 200px; // Ajusta según el espacio requerido
+}
+
+.cards-container {
+  @include grid-style(auto-fit, 240px, 15px, 1020px);
+  margin: auto;
+}
+
+.card {
+  @include card-style(#1c1c1c, rgba(255, 255, 0, 0.3));
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  padding: 20px;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(255, 255, 0, 0.7);
   }
 
-  .spinner {
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid #fff;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
   }
 
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  h2 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffd700;
+    text-align: center;
+    font-family: "StarJedi", sans-serif;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
   }
 
+  button {
+    @include button-styles($primary-color, $secondary-color);
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+}
+
+.paginator {
+  @include paginator-container(10px, 15px);
+  margin-top: auto;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px 0;
+
+  button {
+    @include button-styles($primary-color, $secondary-color);
+    font-size: 1rem;
+    padding: 8px 16px;
+    width: fit-content;
+  }
+
+  span {
+    font-size: 1rem;
+    font-family: "StarJediOutline", sans-serif;
+    color: white;
+    text-align: center;
+  }
 }

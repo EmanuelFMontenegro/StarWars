@@ -37,7 +37,7 @@
         @include input-styles($primary-color, $secondary-color);
       }
     }
-    
+
     .error-message {
       @include error-message;
     }

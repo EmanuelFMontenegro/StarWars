@@ -1,7 +1,6 @@
 <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#ffd700" type="ball-beat" [fullScreen]="true">
-  <p style="color: white; text-align: center; font-size: 1.2rem;">Cargando...</p>
+  <p>Cargando...</p>
 </ngx-spinner>
-
 
 
 <div *ngIf="!isSpinnerVisible">
@@ -20,7 +19,7 @@
 
     <div class="cards-container">
       <div class="card" *ngFor="let person of filteredPeople">
-        <img [src]="getImageUrl(person)" [alt]="person.name" />
+        <img [src]="getImageUrl(person)" [alt]="person.name || 'Imagen no disponible'" />
         <h2>{{ person.name }}</h2>
         <button (click)="viewDetails(person)">Ver Detalle</button>
       </div>
@@ -28,8 +27,12 @@
 
     <div class="paginator">
       <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
-      <span>Página {{ currentPage }}</span>
+      <span>Página {{ currentPage }} de {{ totalPages }}</span>
       <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
     </div>
   </div>
+
 </div>
+
+
+

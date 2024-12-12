@@ -33,15 +33,15 @@ body {
   color: $primary-color;
 
   @media (max-width: 768px) {
-    overflow: auto; 
+    overflow: auto;
   }
 }
 
 
 // Tipografía de títulos
-@mixin title-styles($font-size: 2.5rem, $stroke-color: $primary-color) {
+@mixin title-styles($font-size: 3rem, $stroke-color: $primary-color) {
   font-family: $font-family-jedi;
-  font-size: $font-size;
+  font-size: 3.5rem;
   color: transparent;
   -webkit-text-stroke: 1px $stroke-color;
   animation: _ngcontent-ng-c1019994740_glow 1.5s infinite;

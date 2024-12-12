@@ -2,11 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { PlanetsService } from '../services/planets.service';
 import { Planet } from '../services/planet.model';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { DialogComponent } from '../../../shared/dialog/dialog.component';
+import { DialogDataService } from '../../../shared/dialog/dialog.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { NgxSpinnerService, NgxSpinnerModule } from 'ngx-spinner';
 
 @Component({
   selector: 'app-planets-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatDialogModule,
+    DialogComponent,
+    NgxSpinnerModule,
+  ],
   templateUrl: './planets-list.component.html',
   styleUrls: ['./planets-list.component.scss'],
 })
@@ -14,50 +27,127 @@ export class PlanetsListComponent implements OnInit {
   planets: Planet[] = [];
   filteredPlanetsList: Planet[] = [];
   currentPage: number = 1;
+  cardsPerPage: number = 4;
+  totalPages: number = 0;
   nextPageUrl: string | null = null;
   previousPageUrl: string | null = null;
-  isLoading: boolean = false; // Estado de carga
+  searchTerm: string = '';
+  isSpinnerVisible: boolean = false;
 
-  constructor(private planetsService: PlanetsService) {}
+  constructor(
+    private planetsService: PlanetsService,
+    private router: Router,
+    private dialog: MatDialog,
+    private dialogDataService: DialogDataService,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
+  ) {}
 
   ngOnInit(): void {
     this.loadPlanets();
   }
-
-  // Cargar planetas desde la URL
   loadPlanets(url: string = this.planetsService.getApiUrl()): void {
-    this.isLoading = true; // Activa el spinner
+    this.isSpinnerVisible = true;
+    this.spinner.show();
     this.planetsService.getPlanetsByUrl(url).subscribe({
       next: (data) => {
-        this.planets = data.results;
-        this.filteredPlanetsList = [...this.planets];
+          this.planets = data.results.filter((planet) =>
+          this.planetsService.getPlanetImageUrl(planet)
+        );
+
+        this.totalPages = Math.ceil(this.planets.length / this.cardsPerPage);
+        this.updateFilteredPlanets();
         this.nextPageUrl = data.next;
         this.previousPageUrl = data.previous;
-        this.isLoading = false; // Desactiva el spinner
+        this.isSpinnerVisible = false;
+        this.spinner.hide();
       },
       error: (err) => {
         console.error('Error cargando los planetas:', err);
-        this.isLoading = false; // Desactiva el spinner
+        this.toastr.error('Error al cargar los planetas', 'Error');
+        this.isSpinnerVisible = false;
+        this.spinner.hide();
       },
     });
   }
 
-  // Obtener la URL de la imagen
-  getPlanetImage(planetUrl: string): string {
-    return this.planetsService.getPlanetImageUrl(planetUrl);
+  getPlanetImage(planet: Planet): string {
+    const imageUrl = this.planetsService.getPlanetImageUrl(planet);
+    return imageUrl && imageUrl.trim() !== '' ? imageUrl : 'assets/images/no-image.png';
+  }
+  onSearch(): void {
+    if (!this.searchTerm.trim()) {
+      this.toastr.warning('Por favor ingrese un nombre para buscar.', 'Atención');
+      return;
+    }
+
+    const search = this.searchTerm.toLowerCase();
+    const results = this.planets.filter((planet) =>
+      planet.name.toLowerCase().includes(search)
+    );
+
+    if (results.length === 0) {
+      this.toastr.info('No se encontraron planetas.', 'Información');
+      return;
+    }
+
+    this.planets = results;
+    this.totalPages = Math.ceil(this.planets.length / this.cardsPerPage);
+    this.currentPage = 1;
+    this.updateFilteredPlanets();
   }
 
+  onClearSearch(): void {
+    this.searchTerm = '';
+    this.loadPlanets();
+    this.filteredPlanetsList = [...this.planets];
+  }
+
+
   nextPage(): void {
-    if (this.nextPageUrl) {
+    if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.loadPlanets(this.nextPageUrl);
+      this.updateFilteredPlanets();
     }
   }
 
   previousPage(): void {
-    if (this.previousPageUrl) {
+    if (this.currentPage > 1) {
       this.currentPage--;
-      this.loadPlanets(this.previousPageUrl);
+      this.updateFilteredPlanets();
     }
   }
+
+
+
+  goHome(): void {
+    this.router.navigate(['/']);
+  }
+
+
+  viewDetails(planet: Planet): void {
+    const planetMappings = {
+      name: 'Nombre',
+      climate: 'Clima',
+      population: 'Población',
+      terrain: 'Terreno',
+    };
+
+    const details = this.dialogDataService.prepareDetails(planet, planetMappings);
+
+    this.dialog.open(DialogComponent, {
+      data: {
+        title: `Detalles de ${planet.name}`,
+        details,
+      },
+    });
+  }
+  updateFilteredPlanets(): void {
+    const startIndex = (this.currentPage - 1) * this.cardsPerPage;
+    const endIndex = startIndex + this.cardsPerPage;
+
+    this.filteredPlanetsList = this.planets.slice(startIndex, endIndex);
+  }
+
+
 }

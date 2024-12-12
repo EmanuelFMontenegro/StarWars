@@ -1,3 +1,7 @@
+
+
+/// Mixin para el contenedor general del componente reutilizable
+
 // *********Mixins Flexbox para People Component*********
 
 // Mixin para centrar elementos flexibles
@@ -11,6 +15,7 @@
 
 // Mixin para botones estilizados
 @mixin button-style($color: #007bff, $hover-color: #0056b3) {
+  width: 96%;
   padding: 10px 15px;
   font-size: 14px;
   color: #fff;
@@ -63,7 +68,6 @@
     box-shadow: 0 10px 15px $hover-color, 0 20px 30px rgba(255, 255, 0, 0.2);
   }
 }
-
 
 // Mixin para contenedor general
 @mixin container-style($background-image: url('/img/fondo_sables.png')) {
@@ -191,6 +195,7 @@
 @mixin mobile-layout {
   @media screen and (max-width: 768px) {
     .people-container {
+      width: 90%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -202,13 +207,13 @@
       align-self: flex-start;
       button {
         @include button-style(#ffd700, #ffa500);
-        width: 100%;
+        width: 98%;
         padding: 10px;
       }
     }
 
     .title {
-      font-size: 2rem;
+      font-size: 2.5rem;
       text-align: center;
     }
 
@@ -219,7 +224,7 @@
 
 
       input {
-        @include input-style(100%, 12px, #333, #fff);
+        @include input-style(90%, 12px, #333, #fff);
       }
 
       button {
@@ -236,7 +241,7 @@
       grid-template-columns: 1fr;
       gap: 20px;
       width: 100%;
-      
+
     }
 
     .card {

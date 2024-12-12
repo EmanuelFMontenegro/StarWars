@@ -24,7 +24,7 @@
         Contraseña es obligatoria.
       </p>
     </div>
-    <button type="submit" class="submit-button" [disabled]="loginForm.invalid || loading">
+    <button type="submit" class="submit-button" [disabled]="loading">
       <span *ngIf="loading" class="spinner"></span>
       <span *ngIf="!loading">Ingresar</span>
     </button>

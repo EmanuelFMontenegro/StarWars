@@ -1,18 +1,24 @@
-import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from './dialog.component';
 import { Injectable } from '@angular/core';
-import { Person } from '../../features/people/services/person.model';
 
 @Injectable({ providedIn: 'root' })
 export class DialogDataService {
-  preparePersonDetails(person: Person): { label: string; value: string | number }[] {
-    return [
-      { label: 'Altura', value: `${person.height} cm` },
-      { label: 'Peso', value: `${person.mass} kg` },
-      // { label: 'Color de Cabello', value: person.hair_color },
-      // { label: 'Color de Piel', value: person.skin_color },
-      { label: 'Género', value: person.gender },
-      { label: 'Año de Nacimiento', value: person.birth_year },
-    ];
+  /**
+   * Prepara un conjunto de detalles para mostrarlos en un diálogo, basado en un objeto genérico y un mapeo de claves a etiquetas.
+   *
+   * @param data Objeto del que se extraerán los datos.
+   * @param mappings Mapeo de propiedades del objeto a etiquetas legibles (parcial).
+   * @returns Una lista de pares etiqueta-valor para ser mostrados en el diálogo.
+   */
+  prepareDetails<T>(
+    data: T,
+    mappings: Partial<Record<keyof T, string>>
+  ): { label: string; value: string | number }[] {
+    return Object.entries(mappings).map(([key, label]) => {
+      const value = data[key as keyof T];
+      return {
+        label: label as string, 
+        value: typeof value === 'string' || typeof value === 'number' ? value : 'N/A',
+      };
+    });
   }
 }

@@ -11,7 +11,7 @@ export const AuthInterceptor: HttpInterceptorFn = (
   const authService = inject(AuthenticationService);
   const token = authService.getToken();
 
- 
+
 
   if (token) {
     const clonedRequest = req.clone({
