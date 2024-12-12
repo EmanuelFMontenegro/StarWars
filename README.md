@@ -1,27 +1,73 @@
-# Starwars
+# Star Wars Universe - Frontend Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.9.
+**Star Wars Universe** es una aplicación web desarrollada en **Angular 18**, diseñada para ofrecer una experiencia dinámica de exploración del universo Star Wars. Este proyecto utiliza **SSR (Server-Side Rendering)** con Angular Universal para mejorar el rendimiento, el SEO y la accesibilidad. La aplicación consume la API pública de Star Wars (`https://swapi.dev`) y ofrece funcionalidades como búsqueda, paginación y visualización de detalles de planetas, naves estelares y personajes.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Tabla de Contenidos
 
-## Code scaffolding
+- [Tecnologías Utilizadas](#tecnologías-utilizadas)
+- [Características](#características)
+- [Requisitos Previos](#requisitos-previos)
+- [Instalación](#instalación)
+- [Ejecución del Proyecto](#ejecución-del-proyecto)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Pruebas Unitarias y Cobertura](#pruebas-unitarias-y-cobertura)
+- [Especificaciones Técnicas](#especificaciones-técnicas)
+- [Futuro Desarrollo](#futuro-desarrollo)
+- [Contribuciones](#contribuciones)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## Tecnologías Utilizadas
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Angular** (v18): Framework para el desarrollo frontend.
+- **Angular Universal**: Para Server-Side Rendering (SSR).
+- **RxJS**: Manejo de programación reactiva.
+- **Angular Material** (v18): Componentes estilizados para la interfaz.
+- **Ngx-Toastr**: Notificaciones rápidas y claras.
+- **Ngx-Spinner**: Indicador visual de carga.
+- **Jasmine + Karma**: Pruebas unitarias.
+- **REST API**: Consumo de la API pública de Star Wars.
 
-## Running unit tests
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Características
 
-## Running end-to-end tests
+1. **SSR con Angular Universal**:
+   - Mejoras en el SEO y tiempos de carga inicial.
+   - Optimización de rendimiento para dispositivos de bajo rendimiento.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+2. **Uso de Angular Material v18**:
+   - Componentes modernos, estilizados y adaptables.
+   - Mejoras en la accesibilidad y diseño responsivo.
 
-## Further help
+3. **Componentes Modulares y Reutilizables**:
+   - Componentes independientes para fácil integración y escalabilidad.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+4. **Funcionalidades Principales**:
+   - **Búsqueda dinámica**: Encuentra planetas, naves o personajes de manera eficiente.
+   - **Paginación**: Visualización organizada de datos con navegación por páginas.
+   - **Visualización de Detalles**: Información detallada en modales.
+
+5. **UI/UX Intuitiva**:
+   - Diseño responsivo y accesible utilizando Angular Material.
+
+---
+
+## Requisitos Previos
+
+Antes de iniciar, asegúrate de tener las siguientes herramientas instaladas:
+
+- **Node.js** (v16 o superior): [Descargar Node.js](https://nodejs.org/)
+- **Angular CLI**: Instalar mediante `npm install -g @angular/cli`
+- **Git**: [Descargar Git](https://git-scm.com/)
+
+---
+
+## Instalación
+
+1. **Clona este repositorio**:
+   ```bash
+   git clone https://github.com/usuario/star-wars-ssr-app.git
+   cd star-wars-ssr-app
