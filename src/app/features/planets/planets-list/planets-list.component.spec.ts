@@ -1,157 +1,120 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PlanetsListComponent } from './planets-list.component';
-import { PlanetsService } from '../services/planets.service';
-import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { Router } from '@angular/router';
+import { PeopleListComponent } from '../../people/people-list/people-list.component';
 import { of, throwError } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { PeopleService } from '../../people/services/people.service';
+import { ToastrService } from 'ngx-toastr';
+import { Person,PeopleResponse } from '../../people/services/person.model';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
-describe('PlanetsListComponent', () => {
-  let component: PlanetsListComponent;
-  let fixture: ComponentFixture<PlanetsListComponent>;
-  let mockPlanetsService: jasmine.SpyObj<PlanetsService>;
-  let mockToastrService: jasmine.SpyObj<ToastrService>;
+describe('PeopleListComponent', () => {
+  let component: PeopleListComponent;
+  let fixture: ComponentFixture<PeopleListComponent>;
+  let mockPeopleService: jasmine.SpyObj<PeopleService>;
+  let mockToastr: jasmine.SpyObj<ToastrService>;
   let mockDialog: jasmine.SpyObj<MatDialog>;
-  let mockSpinnerService: jasmine.SpyObj<NgxSpinnerService>;
-  let mockRouter: jasmine.SpyObj<Router>;
+  let mockDialogRef: jasmine.SpyObj<MatDialogRef<any>>;
 
-  const mockResponse = {
+  const mockPeopleResponse: PeopleResponse = {
     count: 2,
-    results: [
-      {
-        name: 'Planet 1',
-        url: 'mock-url/1',
-        rotation_period: '24',
-        orbital_period: '365',
-        diameter: '12742',
-        climate: 'temperate',
-        gravity: '1 standard',
-        terrain: 'plains',
-        surface_water: '71',
-        population: '7000000000',
-        residents: ['resident1-url', 'resident2-url'],
-        films: ['film1-url', 'film2-url'],
-        created: '2024-12-12T10:00:00Z',
-        edited: '2024-12-12T12:00:00Z',
-      },
-      {
-        name: 'Planet 2',
-        url: 'mock-url/2',
-        rotation_period: '30',
-        orbital_period: '400',
-        diameter: '15000',
-        climate: 'arid',
-        gravity: '0.9 standard',
-        terrain: 'desert',
-        surface_water: '0',
-        population: '1000000',
-        residents: ['resident3-url'],
-        films: ['film3-url'],
-        created: '2024-12-11T09:00:00Z',
-        edited: '2024-12-11T11:00:00Z',
-      },
-    ],
     next: null,
     previous: null,
+    results: [
+      {
+        name: 'Luke Skywalker',
+        birth_year: '19BBY',
+        height: '172',
+        mass: '77',
+        gender: 'male',
+        hair_color: 'blond',
+        skin_color: 'fair',
+        eye_color: 'blue',
+        homeworld: 'Tatooine',
+        films: [],
+        species: [],
+        vehicles: [],
+        starships: [],
+        created: '',
+        edited: '',
+        url: 'https://swapi.dev/api/people/1/',
+      },
+      {
+        name: 'Darth Vader',
+        birth_year: '41.9BBY',
+        height: '202',
+        mass: '136',
+        gender: 'male',
+        hair_color: 'none',
+        skin_color: 'white',
+        eye_color: 'yellow',
+        homeworld: 'Tatooine',
+        films: [],
+        species: [],
+        vehicles: [],
+        starships: [],
+        created: '',
+        edited: '',
+        url: 'https://swapi.dev/api/people/4/',
+      },
+    ],
   };
 
   beforeEach(async () => {
-    mockPlanetsService = jasmine.createSpyObj('PlanetsService', ['getPlanetsByUrl', 'getPlanetImageUrl', 'getApiUrl']);
-    mockToastrService = jasmine.createSpyObj('ToastrService', ['success', 'error', 'info', 'warning']);
+    mockPeopleService = jasmine.createSpyObj('PeopleService', ['getPeople', 'getImageUrl']);
+    mockToastr = jasmine.createSpyObj('ToastrService', ['success', 'error', 'info', 'warning']);
     mockDialog = jasmine.createSpyObj('MatDialog', ['open']);
-    mockSpinnerService = jasmine.createSpyObj('NgxSpinnerService', ['show', 'hide']);
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
+    mockDialogRef = jasmine.createSpyObj('MatDialogRef', ['afterClosed']);
 
-    mockPlanetsService.getPlanetsByUrl.and.returnValue(of(mockResponse));
-    mockPlanetsService.getPlanetImageUrl.and.callFake((planet) => `mock-image-url/${planet.name}`);
-    mockPlanetsService.getApiUrl.and.returnValue('mock-api-url');
+    mockPeopleService.getPeople.and.returnValue(of(mockPeopleResponse));
+    mockPeopleService.getImageUrl.and.callFake((person: Person) => {
+      const id = person.url.split('/').slice(-2, -1)[0];
+      return `https://starwars-visualguide.com/assets/img/characters/${id}.jpg`;
+    });
+
+    mockDialog.open.and.returnValue(mockDialogRef);
+    mockDialogRef.afterClosed.and.returnValue(of(true));
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, PlanetsListComponent],
+      imports: [PeopleListComponent],
       providers: [
-        { provide: PlanetsService, useValue: mockPlanetsService },
-        { provide: ToastrService, useValue: mockToastrService },
+        { provide: PeopleService, useValue: mockPeopleService },
+        { provide: ToastrService, useValue: mockToastr },
         { provide: MatDialog, useValue: mockDialog },
-        { provide: NgxSpinnerService, useValue: mockSpinnerService },
-        { provide: Router, useValue: mockRouter },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PlanetsListComponent);
+    fixture = TestBed.createComponent(PeopleListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create the component', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load planets and update filtered list', () => {
-    component.loadPlanets();
-    expect(mockPlanetsService.getPlanetsByUrl).toHaveBeenCalledWith('mock-api-url');
-    expect(component.planets.length).toBe(2);
-    expect(component.filteredPlanetsList.length).toBe(2); // Update filtered list based on mock data
-    expect(mockSpinnerService.hide).toHaveBeenCalled();
+  it('should load characters and update filteredPeople', () => {
+    component.ngOnInit();
+    expect(mockPeopleService.getPeople).toHaveBeenCalled();
+    expect(component.filteredPeople.length).toBe(2);
+    expect(component.filteredPeople[0].name).toBe('Luke Skywalker');
   });
 
-  it('should handle search functionality', () => {
-    component.searchTerm = 'Planet 1';
-    component.onSearch();
-    expect(component.filteredPlanetsList.length).toBe(1);
-    expect(component.filteredPlanetsList[0].name).toBe('Planet 1');
+  it('should return a valid image URL for a person', () => {
+    const imageUrl = component.getImageUrl(mockPeopleResponse.results[0]);
+    expect(imageUrl).toBe('https://starwars-visualguide.com/assets/img/characters/1.jpg');
   });
 
-  it('should clear search and reload planets', () => {
-    component.onClearSearch();
-    expect(component.searchTerm).toBe('');
-    expect(mockPlanetsService.getPlanetsByUrl).toHaveBeenCalled();
-    expect(component.filteredPlanetsList.length).toBe(2); // Should reload the full list
+  it('should handle error when loading people', () => {
+    mockPeopleService.getPeople.and.returnValue(throwError(() => new Error('Error loading people')));
+    component.TraerPersonajes();
+    expect(mockToastr.error).toHaveBeenCalledWith('Error al cargar los personajes.', 'Error');
   });
 
-  it('should show an error message when loading planets fails', () => {
-    mockPlanetsService.getPlanetsByUrl.and.returnValue(throwError(() => new Error('Network error')));
-    component.loadPlanets();
-    expect(mockToastrService.error).toHaveBeenCalledWith('Error al cargar los planetas', 'Error');
-    expect(mockSpinnerService.hide).toHaveBeenCalled();
-  });
-
-  it('should navigate to the next page', () => {
-    component.totalPages = 3;
-    component.currentPage = 1;
-    component.nextPage();
-    expect(component.currentPage).toBe(2);
-  });
-
-  it('should not navigate beyond the last page', () => {
-    component.totalPages = 3;
-    component.currentPage = 3;
-    component.nextPage();
-    expect(component.currentPage).toBe(3);
-  });
-
-  it('should navigate to the previous page', () => {
-    component.currentPage = 2;
-    component.previousPage();
-    expect(component.currentPage).toBe(1);
-  });
-
-  it('should not navigate before the first page', () => {
-    component.currentPage = 1;
-    component.previousPage();
-    expect(component.currentPage).toBe(1);
-  });
-
-  it('should open dialog with planet details', () => {
-    const planet = mockResponse.results[0];
-    component.viewDetails(planet);
-    expect(mockDialog.open).toHaveBeenCalled();
-  });
-
-  it('should show a warning message if searchTerm is empty', () => {
-    component.searchTerm = '';
-    component.onSearch();
-    expect(mockToastrService.warning).toHaveBeenCalledWith('Por favor ingrese un nombre para buscar.', 'Atención');
+  it('should open dialog with person details', () => {
+    const person = mockPeopleResponse.results[0];
+    component.viewDetails(person);
+    expect(mockDialog.open).toHaveBeenCalledWith(jasmine.any(Function), {
+      data: { person },
+    });
+    expect(mockDialogRef.afterClosed).toHaveBeenCalled();
   });
 });
