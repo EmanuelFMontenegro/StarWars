@@ -3,7 +3,7 @@
 
 
 .people-container {
-  @include container-style();
+  @include container-style(url('/img/fondo_planeta.png'));
   padding-bottom: 50px;
   min-height: calc(100vh - 50px);
   max-width: 100%;

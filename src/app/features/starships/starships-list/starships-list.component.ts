@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { NgxSpinnerService, NgxSpinnerModule } from 'ngx-spinner';
 import { StarshipService } from '../services/starships.service';
+import { StarshipResponse, Starship } from '../services/starship.model';
 
 @Component({
   selector: 'app-starships-list',
@@ -23,8 +24,8 @@ import { StarshipService } from '../services/starships.service';
   styleUrls: ['./starships-list.component.scss'],
 })
 export class StarshipsListComponent implements OnInit {
-  starships: any[] = [];
-  filteredStarshipsList: any[] = [];
+  starships: Starship[] = [];
+  filteredStarshipsList: Starship[] = [];
   currentPage: number = 1;
   cardsPerPage: number = 4;
   totalPages: number = 0;
@@ -45,32 +46,38 @@ export class StarshipsListComponent implements OnInit {
   }
 
   loadStarships(page: number): void {
+    if (page > 3) {
+      this.toastr.warning('No hay más páginas disponibles.', 'Atención');
+      return;
+    }
+
     this.isSpinnerVisible = true;
     this.spinner.show();
-    this.starshipService.getStarships(page).subscribe({
-      next: (data: { results: any[]; count: number }) => {
-        this.starships = data.results.map((starship: any) => ({
-          ...starship,
-          imageUrl: this.starshipService.getStarshipImageUrl(starship.url),
-        }));
 
-        this.totalPages = Math.ceil(data.count / this.cardsPerPage);
-        this.updateFilteredStarships();
+    this.starshipService.getStarships(page).subscribe({
+      next: (response: StarshipResponse) => {
+        if (response && response.data && response.info) {
+          // Mapea las naves y asigna una imagen válida o predeterminada
+          this.starships = response.data.map((starship) => ({
+            ...starship,
+            imageUrl: starship.image ? starship.image : 'assets/images/no-image.png',
+          }));
+
+          this.totalPages = Math.min(3, Math.ceil(response.info.total / response.info.limit));
+          this.updateFilteredStarships();
+        } else {
+          this.toastr.error('Datos inválidos recibidos de la API.', 'Error');
+        }
       },
-      error: (err: any) => {
-        console.error('Error cargando las naves:', err);
-        this.toastr.error('Error al cargar las naves', 'Error');
+      error: (err) => {
+        console.error('Error al cargar las naves:', err);
+        this.toastr.error('Error al cargar las naves.', 'Error');
       },
       complete: () => {
         this.isSpinnerVisible = false;
         this.spinner.hide();
       },
     });
-  }
-
-  getStarshipImage(starship: any): string {
-    const imageUrl = this.starshipService.getStarshipImageUrl(starship.url);
-    return imageUrl && imageUrl.trim() !== '' ? imageUrl : 'assets/images/no-image.png';
   }
 
   onSearch(): void {
@@ -80,31 +87,30 @@ export class StarshipsListComponent implements OnInit {
     }
 
     const search = this.searchTerm.toLowerCase();
-    const results = this.starships.filter((starship) =>
+    this.filteredStarshipsList = this.starships.filter((starship) =>
       starship.name.toLowerCase().includes(search)
     );
 
-    if (results.length === 0) {
+    if (this.filteredStarshipsList.length === 0) {
       this.toastr.info('No se encontraron naves.', 'Información');
-      return;
     }
-
-    this.starships = results;
-    this.totalPages = Math.ceil(this.starships.length / this.cardsPerPage);
-    this.currentPage = 1;
-    this.updateFilteredStarships();
   }
 
   onClearSearch(): void {
     this.searchTerm = '';
-    this.loadStarships(this.currentPage);
+    this.currentPage = 1;
     this.filteredStarshipsList = [...this.starships];
+    this.updateFilteredStarships();
+    this.toastr.success('Búsqueda restablecida.', 'Limpieza exitosa');
   }
 
+
   nextPage(): void {
-    if (this.currentPage < this.totalPages) {
+    if (this.currentPage < 3) {
       this.currentPage++;
       this.loadStarships(this.currentPage);
+    } else {
+      this.toastr.warning('No hay más páginas disponibles.', 'Atención');
     }
   }
 
@@ -116,16 +122,13 @@ export class StarshipsListComponent implements OnInit {
   }
 
   goHome(): void {
-    console.log('Navegando al Home...');
     this.router.navigate(['/']);
   }
 
-  viewDetails(starship: any): void {
+  viewDetails(starship: Starship): void {
     const starshipMappings = {
       name: 'Nombre',
-      model: 'Modelo',
-      manufacturer: 'Fabricante',
-      cost_in_credits: 'Costo',
+      description: 'Descripción',
     };
 
     const details = this.dialogDataService.prepareDetails(starship, starshipMappings);
@@ -141,7 +144,6 @@ export class StarshipsListComponent implements OnInit {
   updateFilteredStarships(): void {
     const startIndex = (this.currentPage - 1) * this.cardsPerPage;
     const endIndex = startIndex + this.cardsPerPage;
-
     this.filteredStarshipsList = this.starships.slice(startIndex, endIndex);
   }
 }

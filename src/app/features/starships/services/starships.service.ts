@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class StarshipService {
-  private baseUrl = 'https://swapi.dev/api/starships/';
+  private baseUrl = 'https://starwars-databank-server.vercel.app/api/v1/vehicles';
 
   constructor(private http: HttpClient) {}
 
@@ -16,8 +16,7 @@ export class StarshipService {
   }
 
   
-  getStarshipImageUrl(starshipUrl: string): string {
-    const id = starshipUrl.split('/').slice(-2, -1)[0];
-    return `https://starwars-visualguide.com/assets/img/starships/${id}.jpg`;
+  getStarshipImage(starship: any): string {
+    return starship.img_url ? starship.img_url : 'assets/images/no-image.png';
   }
 }

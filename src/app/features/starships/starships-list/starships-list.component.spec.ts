@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Starship } from '../services/starship.model';
 
 describe('StarshipsListComponent', () => {
   let component: StarshipsListComponent;
@@ -18,22 +19,21 @@ describe('StarshipsListComponent', () => {
   let mockRouter: jasmine.SpyObj<Router>;
 
   const mockResponse = {
-    results: [
-      { name: 'Starship 1', url: 'mock-url/1', model: 'Model 1' },
-      { name: 'Starship 2', url: 'mock-url/2', model: 'Model 2' },
+    info: { total: 10, page: 1, limit: 4 },
+    data: [
+      { _id: '1', name: 'Starship 1', image: 'url-to-image-1', description: 'Description 1' },
+      { _id: '2', name: 'Starship 2', image: 'url-to-image-2', description: 'Description 2' },
     ],
-    count: 2,
   };
 
   beforeEach(async () => {
-    mockStarshipService = jasmine.createSpyObj('StarshipService', ['getStarships', 'getStarshipImageUrl']);
+    mockStarshipService = jasmine.createSpyObj('StarshipService', ['getStarships', 'getStarshipImage']);
     mockToastrService = jasmine.createSpyObj('ToastrService', ['success', 'error', 'info', 'warning']);
     mockDialog = jasmine.createSpyObj('MatDialog', ['open']);
     mockSpinnerService = jasmine.createSpyObj('NgxSpinnerService', ['show', 'hide']);
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
 
     mockStarshipService.getStarships.and.returnValue(of(mockResponse));
-    mockStarshipService.getStarshipImageUrl.and.callFake((url) => `${url}/image`);
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, StarshipsListComponent],
@@ -81,10 +81,11 @@ describe('StarshipsListComponent', () => {
     expect(mockToastrService.info).toHaveBeenCalledWith('No se encontraron naves.', 'Información');
   });
 
-  it('should clear search and reload starships', () => {
+  it('should clear search and reset filtered list', () => {
     component.onClearSearch();
     expect(component.searchTerm).toBe('');
-    expect(mockStarshipService.getStarships).toHaveBeenCalledWith(component.currentPage);
+    expect(component.filteredStarshipsList.length).toBe(component.starships.length);
+    expect(mockToastrService.success).toHaveBeenCalledWith('Búsqueda restablecida.', 'Limpieza exitosa');
   });
 
   it('should navigate to the home page', () => {
@@ -111,7 +112,12 @@ describe('StarshipsListComponent', () => {
   });
 
   it('should open dialog with starship details', () => {
-    const starship = { name: 'Starship 1', model: 'Model 1', manufacturer: 'Manufacturer 1', cost_in_credits: '1000' };
+    const starship: Starship = {
+      _id: '1',
+      name: 'Starship 1',
+      description: 'Test description',
+      image: 'url-to-image-1',
+    };
     component.viewDetails(starship);
     expect(mockDialog.open).toHaveBeenCalled();
   });
@@ -119,6 +125,6 @@ describe('StarshipsListComponent', () => {
   it('should handle error when loading starships', () => {
     mockStarshipService.getStarships.and.returnValue(throwError(() => new Error('Network error')));
     component.loadStarships(1);
-    expect(mockToastrService.error).toHaveBeenCalledWith('Error al cargar las naves', 'Error');
+    expect(mockToastrService.error).toHaveBeenCalledWith('Error al cargar las naves.', 'Error');
   });
 });

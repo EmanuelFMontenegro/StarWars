@@ -25,18 +25,19 @@ describe('StarshipService', () => {
 
   it('should fetch starships by page', () => {
     const mockResponse = {
-      count: 2,
-      results: [
-        { name: 'Starship 1', url: 'https://swapi.dev/api/starships/1/' },
-        { name: 'Starship 2', url: 'https://swapi.dev/api/starships/2/' },
+      info: { total: 20, page: 1, limit: 10 },
+      data: [
+        { _id: '1', name: 'Starship 1', img_url: 'url-to-image-1' },
+        { _id: '2', name: 'Starship 2', img_url: 'url-to-image-2' },
       ],
     };
 
     service.getStarships(1).subscribe((data) => {
       expect(data).toEqual(mockResponse);
+      expect(data.data.length).toBe(2);
     });
 
-    const req = httpMock.expectOne('https://swapi.dev/api/starships/?page=1');
+    const req = httpMock.expectOne(`${service['baseUrl']}?page=1`);
     expect(req.request.method).toBe('GET');
     req.flush(mockResponse);
   });
@@ -52,21 +53,21 @@ describe('StarshipService', () => {
       },
     });
 
-    const req = httpMock.expectOne('https://swapi.dev/api/starships/?page=1');
+    const req = httpMock.expectOne(`${service['baseUrl']}?page=1`);
     expect(req.request.method).toBe('GET');
 
     req.flush(errorMessage, { status: 500, statusText: 'Internal Server Error' });
   });
 
-  it('should generate correct image URL for a starship', () => {
-    const url = 'https://swapi.dev/api/starships/12/';
-    const imageUrl = service.getStarshipImageUrl(url);
-    expect(imageUrl).toBe('https://starwars-visualguide.com/assets/img/starships/12.jpg');
+  it('should return correct image URL if img_url is present', () => {
+    const starship = { img_url: 'url-to-image-1' };
+    const imageUrl = service.getStarshipImage(starship);
+    expect(imageUrl).toBe('url-to-image-1');
   });
 
-  it('should handle invalid starship URL gracefully', () => {
-    const url = 'invalid-url';
-    const imageUrl = service.getStarshipImageUrl(url);
-    expect(imageUrl).toBe('https://starwars-visualguide.com/assets/img/starships/undefined.jpg');
+  it('should return default image URL if img_url is missing', () => {
+    const starship = { img_url: '' };
+    const imageUrl = service.getStarshipImage(starship);
+    expect(imageUrl).toBe('assets/images/no-image.png');
   });
 });

@@ -28,11 +28,16 @@
 
     <div class="cards-container">
       <div class="card" *ngFor="let starship of filteredStarshipsList">
-        <img [src]="getStarshipImage(starship)" [alt]="starship.name" />
+        <img
+          [src]="starship.imageUrl"
+          [alt]="starship.name"
+          (error)="starship.imageUrl = 'assets/images/no-image.png'"
+        />
         <h2>{{ starship.name }}</h2>
         <button (click)="viewDetails(starship)">Ver Detalle</button>
       </div>
     </div>
+
 
     <div class="paginator">
       <button (click)="previousPage()" [disabled]="currentPage === 1">
